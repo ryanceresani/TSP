@@ -7,7 +7,10 @@ package core;
 public class GA {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		String fileName = args[0];
+		//Read file
+		
+		
 
 	}
 
