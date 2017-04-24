@@ -10,6 +10,10 @@ public class Population {
 	int populationSize;
 	ArrayList<Tour> tours;
 
+	public Population(int popSize){
+		this(popSize, false);
+	}
+	
 	public Population(int popSize, boolean init){
 		this.populationSize = popSize;
 		tours = new ArrayList<Tour>(populationSize);
@@ -37,6 +41,10 @@ public class Population {
 		return fittest;
 	}
 
+	public int getSize(){
+		return this.populationSize;
+	}
+	
 	private void generateFirstPopulation() {
 		for (int i = 0; i < populationSize; i++) {
 			tours.add(i, Tour.genTour());
