@@ -5,5 +5,10 @@ package structs;
  *
  */
 public class Population {
-
+	int populationSize;
+	
+	public Population(){
+		
+	}
+	
 }
