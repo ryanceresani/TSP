@@ -1,5 +1,6 @@
 package core;
 
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,11 +8,20 @@ import java.util.ArrayList;
 
 import structs.City;
 
+import structs.CityHandler;
+
+
 /**
  * @author Ryan Ceresani & Tyler Sefcik
  *
  */
 public class GA {
+  
+	public static final double  CROSSOVER_RATE = .7;
+	public static final double  MUTATION_RATE = .1;
+	public static final int POP_SIZE = 100;
+	public static final int TOURNAMENT_SIZE = 10;
+  
 
 	public static void main(String[] args) throws IOException {
 		//String fileName = args[0];
@@ -20,8 +30,7 @@ public class GA {
 		ArrayList<City> cities = new ArrayList<City>();
 		cities = readCities(fileName);
 		
-		printList(cities);
-		
+		printList(cities);		
 	}
 
 	//reads cities into the cities arraylist with their number, x coordinate, and y coordinate

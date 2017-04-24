@@ -9,21 +9,29 @@ import java.util.ArrayList;
 public class Population {
 	int populationSize;
 	ArrayList<Tour> tours;
-	
+
+
 	public Population(int popSize){
-		this.populationSize = popSize;
-		tours = new ArrayList<Tour>(populationSize);
-		
+		this(popSize, false);
 	}
 	
-	public void addTour(Tour newTour){
-		tours.add(newTour);
+	public Population(int popSize, boolean init){
+		this.populationSize = popSize;
+		tours = new ArrayList<Tour>(populationSize);
+		if(init){
+			generateFirstPopulation();
 		}
-	
+	}
+
+	public void addTour(Tour newTour){
+		if(tours.size() < populationSize)
+			tours.add(newTour);
+	}
+
 	public Tour getTour(int index){
 		return tours.get(index);
 	}
-	
+
 	public Tour fittest(){
 		Tour fittest = tours.get(0);
 		for (int i = 1; i < tours.size(); i++) {
@@ -32,5 +40,15 @@ public class Population {
 			}
 		}
 		return fittest;
+	}
+	public int getSize(){
+		return this.populationSize;
+	}
+	
+
+	private void generateFirstPopulation() {
+		for (int i = 0; i < populationSize; i++) {
+			tours.add(i, Tour.genTour());
+		}
 	}
 }
