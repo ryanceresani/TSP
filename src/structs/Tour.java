@@ -3,12 +3,15 @@ package structs;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
+
+import operators.*;
 
 public class Tour {
 
 	ArrayList<City> tour;
 	int fitness;
+	private static WorkerPool pool = new WorkerPool();
+	FitnessCalc fc;
 
 	/**
 	 * Create blank tour
@@ -16,6 +19,9 @@ public class Tour {
 	public Tour(){
 		tour = new ArrayList<City>();
 		fitness = 0;
+		fc = new FitnessCalc(this);
+		pool.addJob(fc);
+		
 	}
 
 	/**
@@ -25,6 +31,8 @@ public class Tour {
 	public Tour(ArrayList<City> tourList){
 		tour = new ArrayList<City>(tourList);
 		fitness = 0;
+		fc = new FitnessCalc(this);
+		pool.addJob(fc);
 	}
 
 	/**
@@ -34,6 +42,8 @@ public class Tour {
 	public Tour(Tour cloneTour){
 		this.tour = new ArrayList<City>(cloneTour.tour);
 		fitness = cloneTour.getFitness();
+		fc = new FitnessCalc(this);
+		pool.addJob(fc);
 	}
 
 	/**
@@ -93,7 +103,8 @@ public class Tour {
 	 */
 	public int getFitness() {
 		if(fitness == 0){
-			recalcFitness();
+			pool.waitForJob(fc);
+			//recalcFitness();
 		}
 		return this.fitness;
 	}
@@ -137,4 +148,11 @@ public class Tour {
 	public void addCity(City city) {
 		tour.add(city);
 	}
+	
+    /**
+     * Performs internal cleanup.  To be called at GA end.
+     */
+    public static void cleanup() {
+        pool.cleanup();
+    }
 }

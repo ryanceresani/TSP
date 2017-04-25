@@ -47,6 +47,7 @@ public class GA {
 		//		System.out.println("Fitness: " + mostFit.getFitness() + " Pop Size: " + POP_SIZE + " END T_SIZE: " + TOURNAMENT_SIZE + " END MUT_RATE: " + MUTATION_RATE + " DECAY_GEN: " + DECAY_GEN );
 		System.out.println(mostFit.getFitness());
 		System.out.println(mostFit.toString());
+		Tour.cleanup();
 	}
 
 	/**
