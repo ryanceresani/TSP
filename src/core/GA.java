@@ -16,8 +16,9 @@ public class GA {
 	//Constants
 	public static final double  CROSSOVER_RATE = .7;
 	public static final int POP_SIZE = 100;
-	public static final int TERMINIATION_GEN = 500;
-	public static final int DECAY_GEN = 50;
+	public static int TERMINIATION_GEN = 500;
+	public static final double MUTATION_DECAY_RATE = .005;
+	public static final double TOURNAMENT_GROWTH_RATE = .02;
 
 	//Adaptive Algorithm Parameters
 	public static int TOURNAMENT_SIZE = 10;
@@ -29,13 +30,13 @@ public class GA {
 		Tour mostFit = pop.fittest();
 
 		while(generation < TERMINIATION_GEN){
-			if(0 == generation % DECAY_GEN){
-				MUTATION_RATE -= .01;
-				TOURNAMENT_SIZE += 2;
-			}
+			MUTATION_RATE *= 1-MUTATION_DECAY_RATE;
+			TOURNAMENT_SIZE *= 1+TOURNAMENT_GROWTH_RATE;
 			pop = evolve(pop);
-			if(pop.fittest().getFitness() < mostFit.getFitness()){
-				mostFit = pop.fittest();
+			if(!pop.fittest().equals(mostFit)){
+				if(pop.fittest().getFitness() < mostFit.getFitness()){
+					mostFit = pop.fittest();
+				}
 			}
 			generation++;
 		}
@@ -47,7 +48,7 @@ public class GA {
 		//		System.out.println("Fitness: " + mostFit.getFitness() + " Pop Size: " + POP_SIZE + " END T_SIZE: " + TOURNAMENT_SIZE + " END MUT_RATE: " + MUTATION_RATE + " DECAY_GEN: " + DECAY_GEN );
 		System.out.println(mostFit.getFitness());
 		System.out.println(mostFit.toString());
-		Tour.cleanup();
+		Population.executor.shutdown();
 	}
 
 	/**
@@ -72,6 +73,15 @@ public class GA {
 	public static void printList(ArrayList<City> list){
 		for(City elem : list){
 			System.out.println(elem.toString());
+		}
+	}
+
+	public static void setParams(String[] args) {
+		if(args[1] != null){
+			TERMINIATION_GEN = Integer.parseInt(args[1]);	
+		}
+		else{
+			TERMINIATION_GEN = 500;
 		}
 	}
 }

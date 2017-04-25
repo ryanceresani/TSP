@@ -1,6 +1,8 @@
 package structs;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Ryan Ceresani & Tyler Sefcik
@@ -9,7 +11,8 @@ import java.util.ArrayList;
 public class Population {
 	int populationSize;
 	ArrayList<Tour> tours;
-
+	Tour fittest = null;
+	public static ExecutorService executor = Executors.newCachedThreadPool();
 
 	/**
 	 * Construct blank population
@@ -18,7 +21,7 @@ public class Population {
 	public Population(int popSize){
 		this(popSize, false);
 	}
-	
+
 	/**
 	 * Construct Population
 	 * @param popSize - the size of the populations (a parameter of the GA)
@@ -27,6 +30,7 @@ public class Population {
 	public Population(int popSize, boolean init){
 		this.populationSize = popSize;
 		tours = new ArrayList<Tour>(populationSize);
+		fittest = null;
 		if(init){
 			generateFirstPopulation();
 		}
@@ -55,22 +59,24 @@ public class Population {
 	 * @return the most fit Tour in this population
 	 */
 	public Tour fittest(){
-		Tour fittest = tours.get(0);
-		for (int i = 1; i < tours.size(); i++) {
-			if(tours.get(i).getFitness() < fittest.getFitness()){
-				fittest = tours.get(i);
+		if(fittest == null){
+			fittest = tours.get(0);
+			for (int i = 1; i < tours.size(); i++) {
+				if(tours.get(i).getFitness() < fittest.getFitness()){
+					fittest = tours.get(i);
+				}
 			}
 		}
 		return fittest;
 	}
-	
+
 	/**
 	 * @return the size of this population
 	 */
 	public int getSize(){
 		return this.populationSize;
 	}
-	
+
 
 	/**
 	 * Fills population with random tours

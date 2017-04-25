@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import core.GA;
+import core.TSP;
 import operators.*;
 
 public class Tour {
 
 	ArrayList<City> tour;
 	int fitness;
-	private static WorkerPool pool = new WorkerPool();
 	FitnessCalc fc;
 
 	/**
@@ -20,8 +21,7 @@ public class Tour {
 		tour = new ArrayList<City>();
 		fitness = 0;
 		fc = new FitnessCalc(this);
-		pool.addJob(fc);
-		
+
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class Tour {
 		tour = new ArrayList<City>(tourList);
 		fitness = 0;
 		fc = new FitnessCalc(this);
-		pool.addJob(fc);
+
 	}
 
 	/**
@@ -43,7 +43,6 @@ public class Tour {
 		this.tour = new ArrayList<City>(cloneTour.tour);
 		fitness = cloneTour.getFitness();
 		fc = new FitnessCalc(this);
-		pool.addJob(fc);
 	}
 
 	/**
@@ -103,8 +102,12 @@ public class Tour {
 	 */
 	public int getFitness() {
 		if(fitness == 0){
-			pool.waitForJob(fc);
-			//recalcFitness();
+			if(TSP.USE_MULTITHREADING){
+				Population.executor.execute(fc);
+			}
+			else{
+				recalcFitness();
+			}
 		}
 		return this.fitness;
 	}
@@ -112,6 +115,7 @@ public class Tour {
 	/**
 	 * Sums the distances between cities
 	 * Checks for last city and calculates distance to start
+	 * @return 
 	 */
 	public void recalcFitness() {
 		fitness = 0;
@@ -148,11 +152,4 @@ public class Tour {
 	public void addCity(City city) {
 		tour.add(city);
 	}
-	
-    /**
-     * Performs internal cleanup.  To be called at GA end.
-     */
-    public static void cleanup() {
-        pool.cleanup();
-    }
 }
