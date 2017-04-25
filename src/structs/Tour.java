@@ -6,10 +6,10 @@ import java.util.Collections;
 import java.util.Iterator;
 
 public class Tour {
-	
+
 	ArrayList<City> tour;
 	int fitness;
-		
+
 	/**
 	 * Create blank tour
 	 */
@@ -17,7 +17,7 @@ public class Tour {
 		tour = new ArrayList<City>();
 		fitness = 0;
 	}
-	
+
 	/**
 	 * Create new Tour from an existing ArrayList of Cities
 	 * @param tourList - 
@@ -26,7 +26,7 @@ public class Tour {
 		tour = new ArrayList<City>(tourList);
 		fitness = 0;
 	}
-	
+
 	/**
 	 * Clones an existing tour
 	 * @param cloneTour - Tour to be cloned
@@ -35,7 +35,7 @@ public class Tour {
 		this.tour = new ArrayList<City>(cloneTour.tour);
 		fitness = cloneTour.getFitness();
 	}
-	
+
 	/**
 	 * @param index - index of city to be assigned
 	 * @param city - City to be assigned
@@ -43,18 +43,18 @@ public class Tour {
 	public void setCity(int index, City city){
 		tour.set(index, city);
 	}
-	
+
 	public City getCity(int index){
 		return tour.get(index);
 	}
-	
+
 	/** Adds a subTour to this tour
 	 * @param subTour - sub-section of other tour to be added directly
 	 */
 	public void addSubTour(Tour subTour){
 		tour.addAll(subTour.getTour());
 	}
-	
+
 	/**
 	 * Gets a portion of a tour
 	 * @param fromIndex - starting location
@@ -65,7 +65,7 @@ public class Tour {
 		ArrayList<City> subTourList = new ArrayList<City>(tour.subList(fromIndex, toIndex));
 		return new Tour(subTourList);
 	}
-	
+
 	private Collection<? extends City> getTour() {
 		return this.tour;
 	}
@@ -85,7 +85,7 @@ public class Tour {
 	public int getSize(){
 		return tour.size();
 	}
-	
+
 	/**
 	 * Returns tour's fitness
 	 * If fitness has not yet been calculated, it calculates it first
@@ -93,7 +93,7 @@ public class Tour {
 	 */
 	public int getFitness() {
 		if(fitness == 0){
-			calcFitness();
+			recalcFitness();
 		}
 		return this.fitness;
 	}
@@ -102,19 +102,18 @@ public class Tour {
 	 * Sums the distances between cities
 	 * Checks for last city and calculates distance to start
 	 */
-	private void calcFitness() {
-		if(fitness == 0){
-			for (int i = 0; i < tour.size(); i++) {
-				if(i != tour.size()-1){
-					fitness += tour.get(i).distanceTo(tour.get(i+1));
-				}
-				else {
-					fitness += tour.get(i).distanceTo(tour.get(0));
-				}
+	public void recalcFitness() {
+		fitness = 0;
+		for (int i = 0; i < tour.size(); i++) {
+			if(i != tour.size()-1){
+				fitness += tour.get(i).distanceTo(tour.get(i+1));
+			}
+			else {
+				fitness += tour.get(i).distanceTo(tour.get(0));
 			}
 		}
 	}
-	
+
 	/**
 	 * Shuffles tours for generating original population
 	 * @return a randomly sorted tour
@@ -125,7 +124,7 @@ public class Tour {
 		Tour newTour = new Tour(newTourList);
 		return newTour;
 	}
-	
+
 	public String toString(){
 		StringBuilder tourString = new StringBuilder();
 		for(City c : tour){

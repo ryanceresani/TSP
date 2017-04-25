@@ -18,7 +18,6 @@ public class Crossover {
 		Tour child = new Tour();
 		//With probability of Crossover Rate, Do Crossover
 		if(ThreadLocalRandom.current().nextDouble() < GA.CROSSOVER_RATE){
-			
 			//Determine random cross-section
 			int crossStart = ThreadLocalRandom.current().nextInt(t1.getSize());
 			int crossEnd = ThreadLocalRandom.current().nextInt(crossStart, t1.getSize());
@@ -55,6 +54,7 @@ public class Crossover {
 			child = new Tour(t1);
 		}	
 		//Pass through the mutator and return
-		return Mutator.mutate(child);
+		return Mutator.swapMutate(child, GA.MUTATION_RATE);
 	}
+	
 }
