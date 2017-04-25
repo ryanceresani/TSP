@@ -13,9 +13,9 @@ import structs.Tour;
 public class Mutator {
 
 	//Mutates a tour
-	public static Tour mutate(Tour tour){
+	public static Tour swapMutate(Tour tour, double rate){
 		//Check against the designated Mutation Rate
-		if(ThreadLocalRandom.current().nextDouble() <= GA.MUTATION_RATE){
+		if(ThreadLocalRandom.current().nextDouble() <= rate){
 			//Generate two random indexes
 			int indexC1 = ThreadLocalRandom.current().nextInt(tour.getSize());
 			int indexC2 = 0;
@@ -28,6 +28,7 @@ public class Mutator {
 			tour.setCity(indexC1, tour.getCity(indexC2));
 			tour.setCity(indexC2, swap);
 		}
+		tour.recalcFitness();
 		return tour;
 	}
 }
