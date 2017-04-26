@@ -12,8 +12,7 @@ public class Population {
 	int populationSize;
 	ArrayList<Tour> tours;
 	Tour fittest = null;
-	public static ExecutorService executor = Executors.newCachedThreadPool();
-
+	public static ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	/**
 	 * Construct blank population
 	 * @param popSize

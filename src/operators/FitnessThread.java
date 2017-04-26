@@ -1,11 +1,11 @@
 package operators;
 import structs.*;
 
-public class FitnessCalc implements Runnable {
+public class FitnessThread implements Runnable {
 	
 	private Tour tour;
 	
-	public FitnessCalc(Tour tour){
+	public FitnessThread(Tour tour){
 		this.tour = tour;
 	}
 	

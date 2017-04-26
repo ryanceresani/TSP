@@ -12,7 +12,7 @@ public class Tour {
 
 	ArrayList<City> tour;
 	int fitness;
-	FitnessCalc fc;
+	FitnessThread ft;
 
 	/**
 	 * Create blank tour
@@ -20,7 +20,7 @@ public class Tour {
 	public Tour(){
 		tour = new ArrayList<City>();
 		fitness = 0;
-		fc = new FitnessCalc(this);
+		ft = new FitnessThread(this);
 
 	}
 
@@ -31,7 +31,7 @@ public class Tour {
 	public Tour(ArrayList<City> tourList){
 		tour = new ArrayList<City>(tourList);
 		fitness = 0;
-		fc = new FitnessCalc(this);
+		ft = new FitnessThread(this);
 
 	}
 
@@ -42,7 +42,7 @@ public class Tour {
 	public Tour(Tour cloneTour){
 		this.tour = new ArrayList<City>(cloneTour.tour);
 		fitness = cloneTour.getFitness();
-		fc = new FitnessCalc(this);
+		ft = new FitnessThread(this);
 	}
 
 	/**
@@ -102,12 +102,7 @@ public class Tour {
 	 */
 	public int getFitness() {
 		if(fitness == 0){
-			if(TSP.USE_MULTITHREADING){
-				Population.executor.execute(fc);
-			}
-			else{
-				recalcFitness();
-			}
+			Population.executor.execute(ft);
 		}
 		return this.fitness;
 	}
