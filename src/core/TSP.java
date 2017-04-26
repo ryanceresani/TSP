@@ -7,17 +7,15 @@ import java.lang.management.ThreadMXBean;
 import structs.CityHandler;
 
 public class TSP {
-
+	public static boolean USE_MULTITHREADING;
+	
 	public static void main(String[] args) throws IOException {
-		String fileName = "fi10639.tsp";
+		String fileName = args[0];
+		GA.setParams(args);
+		SA.setParams(args);
 		CityHandler.setCities(fileName);
-		ThreadMXBean bean = ManagementFactory.getThreadMXBean();
-		float start = bean.getCurrentThreadCpuTime();
-		SA.solveWithSA();
-		System.out.println(bean.getCurrentThreadCpuTime() - start);
-		start = bean.getCurrentThreadCpuTime();
 		GA.solveWithGA();
-		System.out.println(bean.getCurrentThreadCpuTime() - start);
+		SA.solveWithSA(GA.getFittest());
+		
 	}
-
 }

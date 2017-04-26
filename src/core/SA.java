@@ -15,17 +15,29 @@ import operators.*;
 public class SA {
 	//Constants
 	public static final double COOLING_RATE = .0001;
-	public static final int MAX_ITERATIONS = 100000;
 
 	//Changing Parameters
-	public static int temperature = 10000;
+	private static int temperature = 10000;
+	private static int MAX_ITERATIONS = 100000;
 
 	public static void solveWithSA() {
-		//Generate initial tour
-		Tour tour = Tour.genTour(); 
+		solveWithSA(Tour.genTour());
+
+	}
+	/**
+	 * Runs Simulated Annealing on a predetermined tour.
+	 * Useful for taking a Genetic Algorithm output which was rapidly converged and optimizing solution.
+	 * 
+	 * @param seed, Predetermined Tour from another algorithm
+	 */
+	public static void solveWithSA(Tour seed) {
+		if(seed == null){
+			solveWithSA();
+		}
+		Tour tour = seed;
 		Tour bestTour = tour;
 		int iters = 0;
-		
+
 		//Continue until we reach our termination amount of times
 		while(iters < MAX_ITERATIONS){
 			//Clone the current tour
@@ -35,20 +47,19 @@ public class SA {
 			//Verify if the new tour is accepted
 			if(acceptSwap(tour, newTour, temperature)){
 				tour = newTour;
+				//Remember the best tour we ever found
+				if(tour.getFitness() < bestTour.getFitness()){
+					bestTour = new Tour(newTour);
+				}
 			}
-			//Remember the best tour we ever found
-			if(tour.getFitness() < bestTour.getFitness()){
-				bestTour = new Tour(newTour);
-			}
+
 			//Cool the problem
 			temperature = (int) Math.max(1, (temperature * 1-COOLING_RATE));
 			iters++;
 		}
-		
 		System.out.println(bestTour.getFitness());
 		System.out.println(bestTour.toString());
 	}
-
 	private static boolean acceptSwap(Tour tour, Tour newTour, int temperature) {
 		//If the new tour is better accept it automatically
 		if(tour.getFitness() > newTour.getFitness()){
@@ -59,5 +70,14 @@ public class SA {
 			return true;
 		}
 		return false;
+	}
+
+	public static void setParams(String[] args) {
+		if(args[1] != null){
+			MAX_ITERATIONS = Integer.parseInt(args[2]);	
+		}
+		else{
+			MAX_ITERATIONS = 100000;
+		}
 	}
 }

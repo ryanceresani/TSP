@@ -3,12 +3,16 @@ package structs;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
+
+import core.GA;
+import core.TSP;
+import operators.*;
 
 public class Tour {
 
 	ArrayList<City> tour;
 	int fitness;
+	FitnessThread ft;
 
 	/**
 	 * Create blank tour
@@ -16,6 +20,8 @@ public class Tour {
 	public Tour(){
 		tour = new ArrayList<City>();
 		fitness = 0;
+		ft = new FitnessThread(this);
+
 	}
 
 	/**
@@ -25,6 +31,8 @@ public class Tour {
 	public Tour(ArrayList<City> tourList){
 		tour = new ArrayList<City>(tourList);
 		fitness = 0;
+		ft = new FitnessThread(this);
+
 	}
 
 	/**
@@ -34,6 +42,7 @@ public class Tour {
 	public Tour(Tour cloneTour){
 		this.tour = new ArrayList<City>(cloneTour.tour);
 		fitness = cloneTour.getFitness();
+		ft = new FitnessThread(this);
 	}
 
 	/**
@@ -93,7 +102,7 @@ public class Tour {
 	 */
 	public int getFitness() {
 		if(fitness == 0){
-			recalcFitness();
+			Population.executor.execute(ft);
 		}
 		return this.fitness;
 	}
@@ -101,6 +110,7 @@ public class Tour {
 	/**
 	 * Sums the distances between cities
 	 * Checks for last city and calculates distance to start
+	 * @return 
 	 */
 	public void recalcFitness() {
 		fitness = 0;

@@ -15,13 +15,17 @@ public class GA {
 
 	//Constants
 	public static final double  CROSSOVER_RATE = .7;
-	public static final int POP_SIZE = 100;
-	public static final int TERMINIATION_GEN = 500;
-	public static final int DECAY_GEN = 50;
+	public static final double MUTATION_DECAY_RATE = .005;
+	//public static final double TOURNAMENT_GROWTH_RATE = 0;
+	private static final int TOURNAMENT_GROWTH_FACTOR = 5;
 
 	//Adaptive Algorithm Parameters
+	public static int POP_SIZE = 250;
+	public static int TERMINIATION_GEN = 250;
 	public static int TOURNAMENT_SIZE = 10;
-	public static double  MUTATION_RATE = .1;
+	public static double  MUTATION_RATE = .05;
+
+	public static Tour fittest;
 
 	public static void solveWithGA(){		
 		int generation = 0;
@@ -29,26 +33,22 @@ public class GA {
 		Tour mostFit = pop.fittest();
 
 		while(generation < TERMINIATION_GEN){
-			if(0 == generation % DECAY_GEN){
-				MUTATION_RATE -= .01;
-				TOURNAMENT_SIZE += 2;
+			//Alter
+			MUTATION_RATE *= (1-MUTATION_DECAY_RATE);
+			if(generation % TOURNAMENT_GROWTH_FACTOR == 0){
+				TOURNAMENT_SIZE++;
 			}
 			pop = evolve(pop);
-			if(pop.fittest().getFitness() < mostFit.getFitness()){
-				mostFit = pop.fittest();
+			if(!pop.fittest().equals(mostFit)){
+				if(pop.fittest().getFitness() < mostFit.getFitness()){
+					mostFit = pop.fittest();
+				}
 			}
 			generation++;
 		}
-		/*
-		 * For parameter use the following - 
-		 */
-		//		PrintStream out = new PrintStream(new FileOutputStream("output.txt", true));
-		//		System.setOut(out);
-		//		System.out.println("Fitness: " + mostFit.getFitness() + " Pop Size: " + POP_SIZE + " END T_SIZE: " + TOURNAMENT_SIZE + " END MUT_RATE: " + MUTATION_RATE + " DECAY_GEN: " + DECAY_GEN );
-		System.out.println(mostFit.getFitness());
-		System.out.println(mostFit.toString());
+		fittest = mostFit;
+		Population.executor.shutdown();
 	}
-
 	/**
 	 * Evolves a single population into the next generation
 	 * @param pop - population to be evolved
@@ -68,9 +68,19 @@ public class GA {
 		return nextGen;
 	}
 
-	public static void printList(ArrayList<City> list){
-		for(City elem : list){
-			System.out.println(elem.toString());
+	public static Tour getFittest(){
+		if(fittest != null){
+			return fittest;
+		}
+		return null;
+	}
+
+	public static void setParams(String[] args) {
+		if(args[1] != null){
+			TERMINIATION_GEN = Integer.parseInt(args[1]);	
+		}
+		else{
+			TERMINIATION_GEN = 250;
 		}
 	}
 }

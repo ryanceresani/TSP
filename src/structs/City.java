@@ -12,13 +12,13 @@ public class City {
 	private double y;
 	
 	//Remember distances to different cities to save calculation
-	HashMap<Integer, Integer> memoizedDist;
+	HashMap<City, Integer> memoizedDist;
 
 	public City(int num, double x, double y){
 		this.num = num;
 		this.x = x;
 		this.y = y;
-		memoizedDist = new HashMap<Integer, Integer>();
+		memoizedDist = new HashMap<City, Integer>();
 	}
 
 	public int getNum() {
@@ -38,10 +38,11 @@ public class City {
 	 * @param destination City
 	 * @return Euclidian distance as an integer
 	 */
-	public int distanceTo(City dest){
+	public synchronized int distanceTo(City dest){
 		//Check if these cities have been compared before and use that distance
-		if(memoizedDist.containsKey(dest.getNum())){
-			return memoizedDist.get(dest.getNum()).intValue();
+		int distance = 0;
+		if(memoizedDist.containsKey(dest)){
+			distance = memoizedDist.get(dest).intValue();
 		}
 		else{
 			double x1 = this.getX();
@@ -49,10 +50,10 @@ public class City {
 			double x2 = dest.getX();
 			double y2 = dest.getY();
 			//Find Euclidian distance between two points
-			int distance = (int)Math.round(Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)));
-			memoizedDist.put(dest.getNum(), distance);
-			return distance;
+			distance = (int)Math.round(Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2)));
+			memoizedDist.put(dest, distance);
 		}
+		return distance;
 	}
 	
 	public String toString(){
