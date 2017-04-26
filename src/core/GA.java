@@ -76,10 +76,10 @@ public class GA {
 	}
 
 	public static void setParams(String[] args) {
-		if(args[1] != null){
+		try{
 			TERMINIATION_GEN = Integer.parseInt(args[1]);	
 		}
-		else{
+		catch (NullPointerException e){
 			TERMINIATION_GEN = 250;
 		}
 	}

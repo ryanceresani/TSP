@@ -73,10 +73,10 @@ public class SA {
 	}
 
 	public static void setParams(String[] args) {
-		if(args[1] != null){
+		try{
 			MAX_ITERATIONS = Integer.parseInt(args[2]);	
 		}
-		else{
+		catch (NullPointerException e){
 			MAX_ITERATIONS = 100000;
 		}
 	}
