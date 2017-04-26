@@ -1,8 +1,6 @@
 package operators;
 
 import java.util.concurrent.ThreadLocalRandom;
-
-import core.GA;
 import structs.City;
 import structs.Tour;
 

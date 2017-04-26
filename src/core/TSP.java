@@ -1,8 +1,6 @@
 package core;
 
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadMXBean;
 
 import structs.CityHandler;
 
@@ -15,7 +13,6 @@ public class TSP {
 		SA.setParams(args);
 		CityHandler.setCities(fileName);
 		GA.solveWithGA();
-		SA.solveWithSA(GA.getFittest());
-		
+		SA.solveWithSA(GA.getFittest());	
 	}
 }

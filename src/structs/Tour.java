@@ -3,9 +3,6 @@ package structs;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-
-import core.GA;
-import core.TSP;
 import operators.*;
 
 public class Tour {

@@ -76,7 +76,7 @@ public class SA {
 		try{
 			MAX_ITERATIONS = Integer.parseInt(args[2]);	
 		}
-		catch (NullPointerException e){
+		catch (ArrayIndexOutOfBoundsException e){
 			MAX_ITERATIONS = 100000;
 		}
 	}

@@ -1,7 +1,5 @@
 package core;
 
-import java.util.ArrayList;
-
 import operators.Crossover;
 import operators.Tournament;
 import structs.*;
@@ -79,7 +77,7 @@ public class GA {
 		try{
 			TERMINIATION_GEN = Integer.parseInt(args[1]);	
 		}
-		catch (NullPointerException e){
+		catch (ArrayIndexOutOfBoundsException e){
 			TERMINIATION_GEN = 250;
 		}
 	}
