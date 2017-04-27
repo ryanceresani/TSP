@@ -119,12 +119,7 @@ public class Tour {
 				fitness += tour.get(i).distanceTo(tour.get(0));
 			}
 		}
-	}
-	
-	public void recalcThreaded(){
-		Population.executor.execute(ft);
-	}
-	
+	}	
 	/**
 	 * Shuffles tours for generating original population
 	 * @return a randomly sorted tour
