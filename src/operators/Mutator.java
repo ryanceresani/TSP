@@ -25,8 +25,8 @@ public class Mutator {
 			City swap = tour.getCity(indexC1);
 			tour.setCity(indexC1, tour.getCity(indexC2));
 			tour.setCity(indexC2, swap);
+			tour.recalcFitness();
 		}
-		tour.recalcFitness();
 		return tour;
 	}
 }
