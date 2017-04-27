@@ -48,6 +48,7 @@ public class Crossover {
 			while(!holdCity.isEmpty()){
 				child.addCity((holdCity.poll()));
 			}
+			child.recalcFitness();
 		}
 		//If we do not perform cross-over, parent 1 passes through.
 		else{
